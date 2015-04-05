@@ -18,7 +18,7 @@ public class CreateFileTaskConfigurator extends AbstractTaskConfigurator {
 
     public static final String CONTENT_CONFIG_KEY = "content";
     public static final String FILEPATH_CONFIG_KEY = "filepath";
-
+    public static final String OVERWRITE_CONFIG_KEY="overwrite";
     @NotNull
     @Override
     public Map<String, String> generateTaskConfigMap(@NotNull final ActionParametersMap params, @Nullable final TaskDefinition previousTaskDefinition)
@@ -27,6 +27,7 @@ public class CreateFileTaskConfigurator extends AbstractTaskConfigurator {
 
         config.put(CONTENT_CONFIG_KEY, params.getString(CONTENT_CONFIG_KEY));
         config.put(FILEPATH_CONFIG_KEY, params.getString(FILEPATH_CONFIG_KEY));
+        config.put(OVERWRITE_CONFIG_KEY, params.getString(OVERWRITE_CONFIG_KEY));
         return config;
     }
 
@@ -36,7 +37,7 @@ public class CreateFileTaskConfigurator extends AbstractTaskConfigurator {
         super.populateContextForCreate(context);
 
         context.put(CONTENT_CONFIG_KEY, "File Content Here");
-        context.put(FILEPATH_CONFIG_KEY, "File Content Here");
+        context.put(FILEPATH_CONFIG_KEY, "File Path Here");
     }
 
     @Override
@@ -46,6 +47,7 @@ public class CreateFileTaskConfigurator extends AbstractTaskConfigurator {
 
         context.put(CONTENT_CONFIG_KEY, taskDefinition.getConfiguration().get(CONTENT_CONFIG_KEY));
         context.put(FILEPATH_CONFIG_KEY, taskDefinition.getConfiguration().get(FILEPATH_CONFIG_KEY));
+        context.put(OVERWRITE_CONFIG_KEY, taskDefinition.getConfiguration().get(OVERWRITE_CONFIG_KEY));
     }
 
     @Override
@@ -54,6 +56,7 @@ public class CreateFileTaskConfigurator extends AbstractTaskConfigurator {
         super.populateContextForView(context, taskDefinition);
         context.put(CONTENT_CONFIG_KEY, taskDefinition.getConfiguration().get(CONTENT_CONFIG_KEY));
         context.put(FILEPATH_CONFIG_KEY, taskDefinition.getConfiguration().get(FILEPATH_CONFIG_KEY));
+        context.put(OVERWRITE_CONFIG_KEY, taskDefinition.getConfiguration().get(OVERWRITE_CONFIG_KEY));
     }
 
     @Override

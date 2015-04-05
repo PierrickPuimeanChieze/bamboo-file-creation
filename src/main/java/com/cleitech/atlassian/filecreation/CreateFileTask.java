@@ -1,6 +1,7 @@
 package com.cleitech.atlassian.filecreation;
 
 import com.atlassian.bamboo.build.logger.BuildLogger;
+import com.atlassian.bamboo.configuration.ConfigurationMap;
 import com.atlassian.bamboo.task.*;
 import com.atlassian.bamboo.utils.i18n.I18nBean;
 import com.atlassian.bamboo.utils.i18n.I18nBeanFactory;
@@ -29,15 +30,19 @@ public class CreateFileTask implements TaskType {
         final BuildLogger buildLogger = taskContext.getBuildLogger();
 
         //We retrieve the file content from the configuration
-        final String fileContent = taskContext.getConfigurationMap().get(CreateFileTaskConfigurator.CONTENT_CONFIG_KEY);
+        ConfigurationMap taskConfigurationMap = taskContext.getConfigurationMap();
+        final String fileContent = taskConfigurationMap.get(CreateFileTaskConfigurator.CONTENT_CONFIG_KEY);
 
         buildLogger.addBuildLogEntry("File Content :"+fileContent);
         //Same for the path
-        final String filePath = taskContext.getConfigurationMap().get(CreateFileTaskConfigurator.FILEPATH_CONFIG_KEY);
+        final String filePath = taskConfigurationMap.get(CreateFileTaskConfigurator.FILEPATH_CONFIG_KEY);
         File destinationFile = new File(taskContext.getWorkingDirectory(), filePath);
         File parentDirectory = destinationFile.getParentFile();
         I18nBean i18nBean = i18nBeanFactory.getI18nBean();
-        if (destinationFile.exists()) {
+        final boolean overwriteDestinationFile = taskConfigurationMap.getAsBoolean(CreateFileTaskConfigurator.OVERWRITE_CONFIG_KEY);
+        //If the destination file exists and the configuration forbidde us to overwrite it
+        if (destinationFile.exists() && !overwriteDestinationFile) {
+            //We throw an exception
             throw new TaskException(i18nBean.getText("filecreation.fileExists.error", new Object[]{destinationFile.getAbsolutePath()}));
         }
         //If the parent directory doesn't exists we try to created it
