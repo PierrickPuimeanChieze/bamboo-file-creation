@@ -16,7 +16,7 @@ import java.io.PrintWriter;
 /**
  * Created by pierrick.puimean on 1/04/2015.
  */
-public class CreateFileTask implements TaskType {
+public class CreateFileTask implements CommonTaskType {
 
     public I18nBeanFactory i18nBeanFactory;
 
@@ -25,7 +25,7 @@ public class CreateFileTask implements TaskType {
     }
     @NotNull
     @Override
-    public TaskResult execute(TaskContext taskContext) throws TaskException {
+    public TaskResult execute(CommonTaskContext taskContext) throws TaskException {
 
         final BuildLogger buildLogger = taskContext.getBuildLogger();
 
